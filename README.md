@@ -10,6 +10,7 @@ esplorazione, implementazione, revisione e pubblicazione.
 - `builder`: implementazioni circoscritte, test e verifica;
 - `reviewer`: revisione indipendente del diff, senza modifiche;
 - `publisher`: stage, commit separati per modifiche coerenti e push solo su richiesta esplicita.
+- `samu`: fallback generale per ogni richiesta non coperta dagli altri ruoli.
 
 Le regole in `rules/ROUTING.md` mantengono la delega intenzionale: le azioni
 esterne, le modifiche e la pubblicazione restano sempre sotto il controllo

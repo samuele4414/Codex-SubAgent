@@ -1,20 +1,17 @@
 # ChatSubAgent routing
 
-Route automatically; the user does not need to name a role. Do not delegate
-simple answers, one focused read, or trivial edits.
+Route every user request automatically; the user never needs to name a role.
+The coordinator does not complete the request itself. Select exactly one first
+role using this priority order:
 
-- Automatically spawn `scout` before planning or editing when the relevant
-  files, contracts, callers, conventions, or tests are not already known.
-- Automatically spawn `builder` for every bounded feature, bug fix, or
-  behavior-changing configuration change that needs implementation, tests, or
-  validation. The coordinator assigns a precise slice; it does not implement
-  that slice itself.
-- Automatically spawn `reviewer` after every non-trivial or risk-bearing code
-  change, before describing the task as complete. Review findings remain
-  independent; the reviewer never fixes them.
-- Automatically spawn `publisher` only after the user explicitly asks for both
-  commit and push. The coordinator never performs Git publishing itself.
-
+- Explicit commit **and** push: `publisher`.
+- Repository analysis, inspection, exploration, understanding, or locating:
+  `scout`, even if the likely target file is already known.
+- Independent review of an existing diff or implementation: `reviewer`.
+- Feature, fix, configuration change, or other requested implementation:
+  `builder`.
+- Every other request, including questions, planning, explanation, drafting,
+  and general tasks: `samu` (`gpt-5.6-terra`, `medium` reasoning).
 Before spawning, announce the selected role and its purpose. Keep the assigned
 slice small and request a concise report. Do not run multiple agents on the
 same problem unless independent review is justified.
@@ -27,7 +24,7 @@ Start the local monitor once per task before the first automatic spawn:
 & "$HOME/plugins/subagent-monitor/scripts/start.ps1"
 ```
 
-For every automatically selected subagent, generate a short unique id.
+For every automatically selected subagent, including `samu`, generate a short unique id.
 Immediately before spawning, report it with the role's configured model and
 reasoning defaults:
 
