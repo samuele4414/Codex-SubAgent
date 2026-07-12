@@ -1,0 +1,9 @@
+{
+  "scout": { "model": "gpt-5.6-luna", "reasoning": "medium" },
+  "architect": { "model": "gpt-5.6-sol", "reasoning": "high" },
+  "builder": { "model": "gpt-5.6-terra", "reasoning": "high" },
+  "quick-builder": { "model": "gpt-5.6-luna", "reasoning": "low" },
+  "test-debugger": { "model": "gpt-5.6-terra", "reasoning": "high" },
+  "reviewer": { "model": "gpt-5.6-sol", "reasoning": "medium" },
+  "publisher": { "model": "gpt-5.6-luna", "reasoning": "low" }
+}

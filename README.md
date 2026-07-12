@@ -49,3 +49,9 @@ Rimuove solo i quattro file installati e il blocco di importazione gestito.
 Modifica i file in `agents/` per cambiare tono, limiti e modello dei ruoli;
 poi esegui di nuovo l'installer. `templates/AGENTS.md.template` è l'alternativa
 per un'installazione manuale.
+
+## Subagent Monitor
+
+Il plugin versionato in `plugins/subagent-monitor` fornisce una dashboard locale
+per ruolo, modello, reasoning, stato e durata dei subagent dichiarati. I token
+e i costi non vengono stimati perché il runtime Codex locale non li espone.
