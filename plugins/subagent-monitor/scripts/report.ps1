@@ -13,7 +13,8 @@ $configured = $roles.$Role
 if (-not $Model) { $Model = $configured.model }
 if (-not $Reasoning) { $Reasoning = $configured.reasoning }
 if (-not $Model -or -not $Reasoning) { throw "Unknown role '$Role'. Pass -Model and -Reasoning explicitly." }
-$event = [ordered]@{ id = $Id; role = $Role; model = $Model; reasoning = $Reasoning; status = $Status; task = $Task }
+$event = [ordered]@{ id = $Id; role = $Role; model = $Model; reasoning = $Reasoning; status = $Status }
+if ($Task) { $event.task = $Task }
 if ($Status -eq 'started') { $event.startedAt = (Get-Date).ToUniversalTime().ToString('o') }
 else { $event.finishedAt = (Get-Date).ToUniversalTime().ToString('o') }
 $json = $event | ConvertTo-Json -Compress

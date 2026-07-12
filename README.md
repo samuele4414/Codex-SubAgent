@@ -54,5 +54,15 @@ per un'installazione manuale.
 ## Subagent Monitor
 
 Il plugin versionato in `plugins/subagent-monitor` fornisce una dashboard locale
-per ruolo, modello, reasoning, stato e durata dei subagent dichiarati. I token
-e i costi non vengono stimati perché il runtime Codex locale non li espone.
+per ruolo, modello, reasoning, stato e durata dei subagent dichiarati. Registra
+anche una finestra di osservazione di cinque ore: inizia al primo evento
+`started` dichiarato, termina cinque ore dopo e ricomincia con il primo avvio
+successivo alla sua scadenza. È un riferimento temporale del monitor, non la
+finestra della quota Codex: quella non è esposta dal runtime locale.
+
+La dashboard mostra il tempo effettivamente trascorso dai run dichiarati e, per
+i run ancora attivi, una proiezione facoltativa basata sulla mediana delle
+durate concluse con lo stesso ruolo, modello e reasoning. Le esecuzioni
+contemporanee possono sovrapporsi, quindi tale tempo non rappresenta consumo di
+quota. Token di input/output, costi e consumo/rimanenza della quota sono sempre
+indicati come **non disponibili** e non vengono mai stimati.
