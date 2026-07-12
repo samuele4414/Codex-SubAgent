@@ -1,0 +1,10 @@
+# Optional global Codex instructions
+
+Import the routing rules from the installed package:
+
+```text
+@/absolute/path/to/.codex/ChatSubAgent.ROUTING.md
+```
+
+`install.ps1` writes the correct absolute path in a managed block in
+`$CODEX_HOME/AGENTS.md`; use this template only for a manual installation.
