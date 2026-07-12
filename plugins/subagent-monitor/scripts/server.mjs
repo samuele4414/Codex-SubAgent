@@ -42,9 +42,19 @@ function ensureWindow(startedAt) {
   saveWindow(window);
   return window;
 }
+function windowFromHistory(events) {
+  const current = readWindow();
+  if (current) return current;
+  const starts = events.map(event => asDate(event.startedAt)).filter(Boolean);
+  if (!starts.length) return null;
+  const firstStart = new Date(Math.min(...starts.map(date => date.valueOf())));
+  const window = { startedAt: firstStart.toISOString(), endsAt: isoAfter(firstStart, fiveHoursMs), source: "earliest existing declared subagent start" };
+  saveWindow(window);
+  return window;
+}
 function summary(events) {
   const now = new Date();
-  const window = readWindow();
+  const window = windowFromHistory(events);
   const endsAt = asDate(window?.endsAt);
   const remainingSeconds = endsAt ? Math.max(0, Math.ceil((endsAt - now) / 1000)) : null;
   const completed = events.filter(event => event.status === "completed" && durationSeconds(event) !== null);

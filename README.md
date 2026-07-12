@@ -66,3 +66,53 @@ durate concluse con lo stesso ruolo, modello e reasoning. Le esecuzioni
 contemporanee possono sovrapporsi, quindi tale tempo non rappresenta consumo di
 quota. Token di input/output, costi e consumo/rimanenza della quota sono sempre
 indicati come **non disponibili** e non vengono mai stimati.
+
+### Installazione e aggiornamento
+
+Il monitor richiede [Node.js](https://nodejs.org/) disponibile nel `PATH`.
+Dalla radice di questo repository, copia il plugin nella directory dei plugin
+personali di Codex:
+
+```powershell
+$source = Join-Path $PWD 'plugins\subagent-monitor'
+$target = Join-Path $HOME 'plugins\subagent-monitor'
+New-Item -ItemType Directory -Force -Path $target | Out-Null
+@('.codex-plugin', 'scripts', 'skills', 'roles.json') | ForEach-Object {
+    Copy-Item -LiteralPath (Join-Path $source $_) -Destination $target -Recurse -Force
+}
+```
+
+Lo stesso comando aggiorna il plugin senza toccare `$target\.data`, che contiene
+gli eventi e la finestra di osservazione locale. Dopo un aggiornamento riavvia
+il monitor con il comando sotto. L'installer principale (`install.ps1`) installa
+ruoli e routing, non copia il plugin.
+
+### Avvio e dashboard
+
+```powershell
+& "$HOME\plugins\subagent-monitor\scripts\start.ps1"
+```
+
+Apri [http://127.0.0.1:43119/](http://127.0.0.1:43119/) per la dashboard. Il
+server ascolta solo in locale sulla porta `43119`: lo script riusa un monitor
+già sano su quell'indirizzo; se la porta è occupata da un altro processo,
+liberala prima di avviarlo.
+
+Con le regole di routing installate, il reporting è automatico: il monitor
+viene avviato una volta per task e ogni subagent riceve un evento `started`, poi
+`completed` o `failed` con lo stesso ID. Per un uso manuale, avvia il monitor e
+invia gli eventi così:
+
+```powershell
+$id = 'build-a1b2'
+& "$HOME\plugins\subagent-monitor\scripts\report.ps1" -Status started -Role builder -Id $id -Task 'Implementazione dashboard'
+# esegui il lavoro
+& "$HOME\plugins\subagent-monitor\scripts\report.ps1" -Status completed -Role builder -Id $id
+```
+
+Usa `-Status failed` invece di `completed` quando il subagent fallisce, sempre
+con lo stesso ID. La dashboard conserva il ruolo, modello e reasoning dichiarati
+dal ruolo configurato; non può leggere token, costi, quota o la finestra reale
+di utilizzo di Codex. Il pulsante **Clear history** elimina soltanto la cronologia
+locale del monitor (`.data`), inclusa la finestra di osservazione; il successivo
+evento `started` ne inizierà una nuova.
