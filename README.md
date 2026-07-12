@@ -1,4 +1,4 @@
-# ChatSubAgent
+# Codex-SubAgent
 
 Configurazione personale e portabile di ruoli per subagenti Codex. Non crea un
 nuovo orchestratore: aggiunge ruoli specializzati che Codex può selezionare per
